@@ -1,0 +1,963 @@
+% Appendix Template
+
+\chapter{Appendix A} % Main appendix title
+
+\label{AppendixA} % Change X to a consecutive letter; for referencing this appendix elsewhere, use \ref{AppendixX}
+
+\lhead{Appendix A. \emph{Appendix Title Here}} % Change X to a consecutive letter; this is for the header on each page - perhaps a shortened title
+
+\section{Gait Analysis and Optimization}
+Gait analysis is the study of human locomotion. In order to analyze and quantify how someone walks, it is necessary to isolate the shortest, unique, repeatable task during gait. This task is called the gait cycle.
+ 
+\section{Bipeds developed so far}
+
+
+\textbf{Rabbit} is the most simple, stable biped robot. The model is similar to walking with stilts. It was designed to resemble the simple 2-dimensional sagittal plane biped model. The project on running of the Rabbit was undertaken in 2004 (UofM). There were multiple biped models that came through developments in Rabbit, namely Mabel, Atrias and Marlo. These were designed to resemble human walking as close as possible. The rigid knee link was replaced with a spring-mass model to match human characteristics.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.8]{grizzle_bipeds.jpg}
+    \caption{Bipeds Robots developed by Prof. Jessy W. Grizzle}
+    \label{fig:my_label}
+\end{figure}
+
+\textbf{Cassie} is the most advanced biped robot developed by Agility robotics. It is currently used in multiple research labs for developments in controls and stability of biped robots. It has inverted knees, unlike humans, with small foot for point contact. 
+
+\textbf{Atlas} is the most advanced humanoid developed by Boston Dynamics, that could perform various maneuvers including running and aerobics. 
+
+There are multiple other flat-footed humanoid robots which include Honda's Asimo.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.4]{cassie_biped.jpg}
+    \caption{Cassie developed by Agility Robotics}
+    \label{fig:my_label}
+\end{figure}
+
+\section{Robot Locomotion: Recent developments}
+In the field of robot locomotion, multiple-legged robots were more of a success due to increased stability. The dog-like robot \textbf{Spot} is a quadraped robot developed by Boston dynamics that could move in almost any terrain. Also, \textbf{Cheetah} is one of the most advanced quadraped robot developed in Biomimetics lab, MIT that is capable of walking, running, jumping and turning.
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.5]{cheetah_MIT_quadraped.png}
+    \caption{Cheetah developed in MIT}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.4]{Boston_Robots.png}
+    \caption{Atlas and SpotMini developed by Boston Dynamics}
+    \label{fig:my_label}
+\end{figure}
+
+
+
+\newpage
+
+\section{Mathematical Preliminaries for Legged Robots}
+\subsection{Planar Lagrangian Dynamics}
+    Lagrangian Dynamics for N-link System
+    
+    Kinetic energy
+    \begin{equation}
+        T(\theta,\dot{\theta}) = \sum_{i=1}^{n}\frac{1}{2}\dot{\theta}^T D(\theta)\dot{\theta}
+    \end{equation}
+    Potential Energy
+    \begin{equation}
+        V(\theta)=\sum_{i=1}^{n}m_i g h_i(\theta)
+    \end{equation}
+    \begin{equation}
+        \mathcal{L}(\theta,\dot{\theta})=T(\theta,\dot{\theta})-V(\theta)
+    \end{equation}
+    Equation of motion for each link:
+    \begin{align}
+        \sum_{j=1}^{n}D_{ij}(\theta)\ddot{\theta}_{j}+\sum_{j,k=1}^{n}\Gamma_{ij}^{k}\dot{\theta}_{j}\dot{\theta}_{k}+\frac{\partial V}{\partial \theta_{i}}(\theta)&=\tau_i & i&=1,..,n
+    \end{align}
+    
+    
+    $\Gamma_{ij}^{k}$ are Christoffel symbols corresponding to inertia matrix $D(\theta)$
+    \begin{equation}
+        \Gamma_{ij}^{k}= \frac{1}{2}[\frac{\partial D_{ij}(\theta)}{\partial \theta_{k}} + \frac{\partial D_{ik}(\theta)}{\partial \theta_{j}} - \frac{\partial D_{kj}(\theta)}{\partial \theta_{i}}]
+    \end{equation}
+    
+    Coriolis Matrix
+    \begin{equation}
+        C(\theta,\dot{\theta}) = \sum_{k=1}^{n}\Gamma_{ij}^{k}\dot{\theta}_k 
+    \end{equation}
+
+\section{Gait Planning for Three-Link Biped Robot for Planar Walking}
+
+The walking gait of a planar biped model is majorly divided into two phases:
+\begin{itemize}
+        \item Single Support Phase (Swing Phase Model): The stance leg acts as a pivot and the swing leg rotates freely
+        \item Double Support Phase (Impact Model): The discontinuity in velocity occurs whereas the position is continuous. The rigid contact model is assumed. 
+    \end{itemize}
+    
+The governing equation of motion dealing in sagittal plane :
+    \begin{equation}
+        D(\theta)\ddot{\theta} + C(\theta,\dot{\theta})\dot{\theta}+G(\theta)=Bu
+    \end{equation}
+    In case of impact:
+    \begin{equation}
+        D(\theta)\ddot{\theta} + C(\theta,\dot{\theta})\dot{\theta}+G(\theta)=Bu+\delta F_{ext}
+    \end{equation}
+    
+
+The hybrid dynamics is defined as:
+\begin{align*}
+        \dot{x}&=f(x)+g(x)u    & x^{-}\not\in S  \\
+        x^{+}&=\Delta (x^{-})  & x^{-}\in S
+    \end{align*}
+    where $S$ is the impact surface and $\Delta$ is the reset or impact map 
+    
+    \begin{itemize}
+        \item A Hybrid controller required - Both continuous and discrete components
+        \item Continuous - Lagrangian Dynamics
+        \item Discrete - Knees locking, Foot hitting the ground (Generally modeled using Unilateral Constraints)
+    \end{itemize} 
+    
+    \begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.4]{3link.PNG}
+    \caption{Three-Link Biped Model}
+    \label{fig:my_label}
+\end{figure}
+
+\subsection{Three-Link Hybrid Dynamics}
+
+The three-link hybrid dynamics is obtained using lagrangian formulation and momentum balance equations and looks similar to equation 7 and equation 8. \footnote{J.W. Grizzle, An Analytical Approach to Asymptotically Stable Walking in Planar Biped Robots, 2001}
+
+\subsection{Nonlinear Feedback Control}
+The zero dynamics of the biped is first obtained to implement the nonlinear feedback control. The constraints are modeled in the feedback loop itself. 
+
+
+    \[ y 
+    = 
+    \begin{bmatrix} y_1\\ y_2\\ \end{bmatrix} 
+    = 
+    \begin{bmatrix} h_1(\theta)\\ h_2(\theta)\\ \end{bmatrix}
+    =
+    \begin{bmatrix} \theta_{3}-\theta_{des}\\ \theta_2+\theta_1\\ \end{bmatrix}\]
+    
+
+The equation obtained from inverse dynamics: 
+\begin{equation}
+    \ddot{y} = L_f^{2}h(x)+L_{g}L_{f}h(x)u
+\end{equation}
+
+A continuous feedback $v = v(y,\dot{y})$ is imposed, so that the pair of double integrators $\ddot{y}=v$ is globally finite-time stabilized.
+
+\newpage
+\section{Passive Dynamic Walking for Kneed Walker}
+The kneed walker is a four link biped model in sagittal plane. the gait cycle is divided into four independent phases. The walking down a shallow slope starts as a continuous phase three-link biped model which ends at a discrete event of knee locking. After knee-locking, begins the phase of two-link biped model until the heel strike takes place. The equations of motion in continuous phase are derived similar to above three-link bipedal model using lagrangian dynamics. For the discrete events, momentum balance before and after the event is used to obtain the required equations. \footnote{VFH Chen, Passive dynamic walking with knees: A point foot model, 2007 (CSAIL, MIT)}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=1]{4_link_snip.PNG}
+    \caption{Four-link biped model passively walking down a shallow slope}
+    \label{fig:my_label}
+\end{figure}
+
+Modes of walking
+
+\subsection{Unlocked Knee Dynamics}
+
+The derived equations of motion
+
+\begin{equation}
+\mathbf{H_u \ddot{q} + B_u(q,\dot{q})\dot{q} + G_u(q) = 0}
+\end{equation}
+
+\begin{align*}
+\mathbf{H}_u &= \begin{bmatrix}
+H_{11} & H_{12} & H_{13}\\
+H_{12} & H_{22} & H_{23}\\
+H_{13} & H_{23} & H_{33}
+\end{bmatrix}\\
+\mathbf{B}_u &= \begin{bmatrix}
+0 & h_{122}\dot{q_2} & h_{133} \dot{q_3}\\
+h_{211}\dot{q_1} & 0 & h_{233}\dot{q_3} \\
+h_{311}\dot{q_1} & h_{322}\dot{q_2} & 0
+\end{bmatrix}\\
+\mathbf{G}_u &= \begin{bmatrix}
+-(m_s a_1 + m_t (l_s +a_2)+(m_h +m_s +m_t)L)g sin(q_1)\\
+(m_t b_2 + m_s l_t) g sin(q_2)\\
+m_s b_1 g sin(q_3)
+\end{bmatrix} 
+\end{align*}
+
+where the matrix values are given by,
+
+\begin{align*}
+H_{11} &= m_s a_1^2 +m_t (l_s +a_2)^2 +(m_h +m_s +m_t) L^2 \\
+h_{122} &= -(m_t b_2 + m_s l_t) L sin(q_1-q_2) \\
+H_{12} &= -(m_t b_2 + m_s l_t) L cos(q_2-q_1) \\
+h_{133} &= -m_s b_1 L sin(q_1-q_3)\\
+H_{13} &= -m_s b_1 L cos(q_3-q_1) \\
+h_{211} &= -h_{122} \\
+H_{22} &= m_t b_2^2 + m_s l_t^2 \\
+h_{233} &= m_s l_t b_1 sin(q_3-q_2) \\
+H_{23} &= m_s l_t b_1 cos(q_3-q_2) \\ 
+h_{311} &= -h_{133} \\
+H_{33} &= m_s b_1^2 \\
+h_{322} &= -h_{233} \\
+\end{align*}
+
+\subsection{Locked Knee Dynamics}
+
+\begin{equation}
+\mathbf{H_l \ddot{q} + B_l(q,\dot{q})\dot{q} + G_l(q) = 0}
+\end{equation}
+
+\begin{align*}
+\mathbf{H}_l &= \begin{bmatrix}
+H_{11} & H_{12}\\
+H_{12} & H_{22}
+\end{bmatrix}\\
+\mathbf{B}_l &= \begin{bmatrix}
+0 & h \dot{q_2}\\
+-h\dot{q_1} & 0
+\end{bmatrix}\\
+\mathbf{G}_l &= \begin{bmatrix}
+-(m_s a_1 +m_t (l_s+a_2)+(m_h +m_t +m_s) L) g sin(q_1) \\
+(m_t b_2 +m_s (l_t +b_1)) g sin(q_2)
+\end{bmatrix}
+\end{align*}
+
+where the matrix values are obtained as given below,
+\begin{align*}
+H_{11} &= m_s a_1^2 + m_t (l_s +a_2)^2 +(m_h +m_s +m_t)L^2 \\
+H_{12} &= -(m_t b_2 + m_s (l_t +b_1)) L cos(q_2-q_1)\\
+H_{22} &= m_t b_2^2 +m_s (l_t +b_1)^2 \\
+h &= -(m_t b_2 + m_s (l_t + b_1)) L sin(q_1-q_2) 
+\end{align*}
+
+\subsection{Knee Locking Impact Dynamics}
+
+\begin{equation}
+\mathbf{Q}_k^{+}\begin{bmatrix}
+\dot{q}_1^{+} \\ \dot{q}_2^{+}
+\end{bmatrix} = \mathbf{Q}_k^{-}\begin{bmatrix}
+\dot{q}_1^{-} \\ \dot{q}_2^{-} \\ \dot{q}_3^{-}
+\end{bmatrix}
+\end{equation}
+
+Since the knees are locked, the links move together and, $\dot{q}_3^{+} = \dot{q}_2^{+} $.
+
+\begin{align*}
+\mathbf{Q}_k^{-} &= \begin{bmatrix}
+Q11_m & Q12_m & Q13_m\\ 
+Q21_m & Q22_m & Q23_m
+\end{bmatrix}\\
+\mathbf{Q}_k^{+} &= \begin{bmatrix}
+Q11 & Q12\\
+Q21 & Q22
+\end{bmatrix}\\
+\end{align*}
+
+Note: $\alpha$ not right in paper referred
+\begin{align*}
+\alpha &= (q_1-q_2) \\
+\beta &= (q_1-q_3)\\
+\gamma &= (q_2-q_3)\\
+Q11_m &= -(m_s l_t +m_t b_2) L cos(\alpha)-m_s b_1 L cos(\beta)+(m_t +m_s +m_h)L^2 +m_s a_1^2 +m_t(l_s +a_2)^2\\
+Q12_m &= -(m_s l_t +m_tb_2)L cos(\alpha) +m_s b_1 l_t cos(\gamma) +m_t b_2^2 +m_s l_t^2\\
+Q13_m &= -m_s b_1 L cos(\beta) +m_s b_1 l_t cos(\gamma) +m_s b_1^2\\
+Q21_m &= -(m_s l_t +m_t b_2) L cos(\alpha)-m_sb_1 L cos(\beta)\\
+Q22_m &= m_s b_1 l_t cos(\gamma) +m_s l_t^2 +m_t b_2^2\\
+Q23_m &= m_s b_1 l_t cos(\gamma) +m_s b_1^2\\
+Q21 &= -(m_s (b_1 +l_t)+m_t b_2) L cos(\alpha)\\
+Q22 &= m_s(l_t +b_1)^2 + m_t b_2^2\\
+Q11 &= Q21 +m_t(l_s +a_2)^2 +(m_h +m_t +m_s) L^2 +m_s a_1^2\\
+Q12 &= Q21 +m_s(l_t +b_1)^2 +m_t b_2^2\\
+\end{align*}
+
+
+
+
+
+\subsection{Heelstrike Impact Dynamics}
+
+\begin{equation}
+\mathbf{q}^{+} = \mathbf{R}\mathbf{q}^{-}
+\end{equation}
+
+\begin{equation}
+\mathbf{Q}_h^{+}\dot{\mathbf{q}}^{+} = \mathbf{Q}_h^{-}\dot{\mathbf{q}}^{-}
+\end{equation}
+
+\begin{align*}
+\mathbf{Q}_h^{-} &= \begin{bmatrix}
+Q11_m & Q12_m \\ Q21_m & Q22_m
+\end{bmatrix}\\
+\mathbf{Q}_h^{+} &= \begin{bmatrix}
+Q11 & Q12 \\ Q21 & Q22
+\end{bmatrix}
+\end{align*}
+
+Note: errors in paper, check + or - in second term, check for 2*ms*a1 in third term
+
+\begin{align*}
+\alpha &= (q_1-q_2)\\ 
+Q12_m &= -m_s a_1(l_t +b_1)-m_t b_2 (l_s +a_2) \\ 
+Q11_m &= Q12_m +(m_h L+2 m_t(a_2 +l_s)+2m_s a_1)L cos(\alpha)\\
+Q21_m &= Q12_m\\
+Q22_m &= 0\\
+Q21 &= -(m_s(b_1 +l_t)+m_t b_2)L cos(\alpha)\\
+Q22 &= m_s(l_t +b_1)^2 +m_t b_2^2 \\
+Q11 &= Q21 +(m_s +m_t +m_h) L^2 +m_s a_1^2 +m_t(a_2 +l_s)^2\\
+Q12 &= Q21 + m_s(b_1 +l_t)^2 +m_t b_2^2\\
+\mathbf{R} &= \begin{bmatrix}
+0 & 1\\
+1 & 0\\
+1 & 0\\
+\end{bmatrix}
+\end{align*}
+
+\newpage
+\section{Stability: Periodic Orbits}
+ Obtaining the periodic orbit \\
+ Poincare maps
+
+\section{Five-Link Hybrid Dynamics}
+The five link biped model, Rabbit was used to obtain the hybrid dynamical equations. A similar approach was used to design the nonlinear feedback control. The symbolic manipulation for 7-DOF system is becoming computationally intensive, so the parameters of Rabbit were used to obtain mathematical results. The initial fixed point is yet to be found for stable-walking cycle of the robot. The simulation is currently diverging with high torque inputs due to unknown stable initial conditions.  
+\footnote{F. Plestan ; J.W. Grizzle ; E.R. Westervelt ; G. Abba, Stable walking of a 7-DOF biped robot, 2003}
+
+\begin{figure}[!htb]
+	\centering
+    \includegraphics[scale=0.25]{5link.png}
+    \caption{Five-Link Biped Model : give reference}
+    \label{fig:my_label}
+\end{figure}
+
+\newpage
+\section{Results and Discussion}
+\subsection{Three-Link Stick Diagram}
+The three-link biped model with nonlinear feedback control was implemented with parameters obtained from Grizzle's book. The figure below shows the stick diagram of the model. The three-link model suffers from foot-scuffing due to the absence of knee. It does not model the human walking to a satisfactory level, but is a good starting point. 
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.5]{Three_link_snip.PNG}
+    \caption{Three-Link Biped: Stick Diagram for 5 half cycles}
+    \label{fig:my_label}
+\end{figure}
+
+\subsection{Passive Dynamic Walking}
+For a given initial condition near the fixed point, the simulation is ran for five half cycles. Obtained below are the results for the energy of the biped, showing constant mechanical energy for given slope and robot parameters.
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.33]{energy_plot.eps}
+    \caption{Energy Diagram for 5 half cycles}
+    \label{fig:my_label}
+\end{figure}
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.33]{limit_cycle_5half.eps}
+    \caption{Limit Cycle for 5 half cycles}
+    \label{fig:my_label}
+\end{figure}
+The link to the animation video is \href{https://drive.google.com/open?id=1z1Fs0hKxXSM2I5II_YVG0Hvq0Z2K4Y_a}{here}.
+
+\newpage
+\section{Mathematical Terms}
+
+The null space of a matrix $A$ is defined as all the vectors $B$ such that
+\begin{equation}
+AB = \mathbf{0}
+\end{equation}
+
+Null space projection
+\begin{equation}
+\mathbb{N}A = \mathbf{0}
+\end{equation}
+
+
+\section{SO(3) and Angular velocity, Rotation matrices}
+
+The rotation matrix that tranforms coordinate frame A to coordinate frame B has given properties,
+
+\begin{equation}
+R_{AB}^T\cdot R_{AB} = \mathbb{I}_{3\times 3}
+\end{equation}
+The rotation matrix belongs to a special orthonormal group $SO(3)$, and has properties $R_{AB}^{-1} = R_{BA} = R_{AB}^T$. 
+
+\subsection{Euler Angles}
+XYZ euler angles are called cardan angles,
+
+\begin{equation}
+\mathbf{\chi}_{XYZ} = \begin{pmatrix}
+x \\ y \\ z
+\end{pmatrix}
+\end{equation} 
+
+The rotation matrix is defined as,
+\begin{align*}
+R_{XYZ} &= R_{\{x\}}R_{\{y\}}R_{\{z\}}\\
+&= \begin{bmatrix}
+1 & 0 & 0\\
+0 & cos(x) & -sin(x) \\
+0 & sin(x) & cos(x)
+\end{bmatrix}\begin{bmatrix}
+cos(y) & 0 & sin(y) \\
+0 & 1 & 0\\
+-sin(y) & 0 & cos(y) 
+\end{bmatrix}\begin{bmatrix}
+cos(z) & -sin(z) & 0\\
+sin(z) & cos(z) & 0\\
+0 & 0 & 1
+\end{bmatrix}\\
+&= \begin{bmatrix}
+c_yc_z & -c_ys_z & s_y \\
+c_xs_z+c_zs_xs_y & c_xc_z - s_xs_ys_z & -c_ys_x\\
+s_xs_z - c_xc_zs_y & c_zs_x + c_xs_ys_z & c_xc_y
+\end{bmatrix}
+\end{align*}
+
+\subsection{Angular Velocity}
+The angular velocity is defined as,
+\begin{equation}
+[{_A}\omega_{AB}]_{X} = \dot{R}_{AB}\cdot R_{AB}^T
+\end{equation}
+
+where $[{_A}\omega_{AB}]_{X}$ is a skew symmetric matrix of ${_A}\omega_{AB}$:
+\begin{equation}
+[{_A}\omega_{AB}]_{X} = \begin{bmatrix}
+0 & -\omega_z & \omega_y\\
+\omega_z & 0 & -\omega_x \\
+-\omega_y & \omega_x & 0
+\end{bmatrix}
+\end{equation}
+and,
+\begin{equation}
+{_A}\omega_{AB} = \begin{pmatrix}
+\omega_x\\
+\omega_y\\
+\omega_z
+\end{pmatrix}
+\end{equation}
+
+Angular velocity transformation is similar to other vectors,
+\begin{equation}
+{_I}\omega_{AB} = R_{IA}\cdot {_A}\omega_{AB}
+\end{equation}
+
+
+
+\section{Derivatives of Rotations}
+Given the euler angles $\chi_{XYZ}$ and their derivatives $\dot{\chi}_{XYZ}$, $\mathbf{E}_{R,XYZ}$ maps ${_A}\omega_{AB}$ to $\dot{\chi}_{XYZ}$    
+
+\begin{equation}
+{_A}\omega_{AB} = \mathbf{E}_{R,XYZ} \cdot \dot{\chi}_{XYZ}
+\end{equation}
+
+\begin{equation}
+\mathbf{e}_{x} = \mathbb{I}_{3\times 3}\begin{bmatrix}
+1 \\ 0 \\ 0
+\end{bmatrix}
+\end{equation}
+
+\begin{align*}
+\mathbf{e}_y &= R_{\{x\}}\begin{bmatrix}
+0 \\ 1 \\ 0
+\end{bmatrix}\\
+&= \begin{bmatrix}
+1 & 0 & 0 \\
+0 & cos(x) & -sin(x) \\
+0 & sin(x) & cos(x)
+\end{bmatrix}\begin{bmatrix}
+0 \\ 1\\ 0
+\end{bmatrix}\\
+&= \begin{bmatrix}
+0 \\ cos(x) \\ sin(x)
+\end{bmatrix}
+\end{align*}
+
+\begin{align*}
+\mathbf{e}_z &= R_{\{x\}}R_{\{y\}}\begin{bmatrix}
+0 \\ 0 \\ 1
+\end{bmatrix}\\
+&= \begin{bmatrix}
+1 & 0 & 0 \\
+0 & cos(x) & -sin(x) \\
+0 & sin(x) & cos(x)
+\end{bmatrix}\begin{bmatrix}
+cos(y) & 0 & sin(y) \\
+0 & 1 & 0 \\
+-sin(y) & 0 & cos(y)
+\end{bmatrix}\begin{bmatrix}
+0 \\ 0 \\ 1
+\end{bmatrix}\\
+&= \begin{bmatrix}
+sin(y) \\ -cos(y)sin(x) \\ cos(x)cos(y)
+\end{bmatrix}
+\end{align*}
+
+\begin{equation}
+\mathbf{E}_{R,XYZ} = \begin{bmatrix}
+\mathbf{e}_x & \mathbf{e}_y & \mathbf{e}_z
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 & sin(y)\\
+0 & cos(x) & -cos(y)sin(x)\\
+0 & sin(x) & cos(x)cos(y)
+\end{bmatrix}
+\end{equation}
+
+
+\begin{equation}
+\mathbf{E}_{R,XYZ}^{-1} = \begin{bmatrix}
+1 & \frac{sin(x)sin(y)}{cos(y)} & \frac{-cos(x)sin(y)}{cos(y)}\\
+0 & cos(x) & sin(x)\\
+0 & \frac{-sin(x)}{cos(y)} & \frac{cos(x)}{cos(y)}
+\end{bmatrix}
+\end{equation}
+
+
+
+
+\section{Inverse of T, Pseudo Inverse}
+
+The transformation matrices are defined as,
+\begin{align*}
+r_{AB} &= r_{AC}+ r_{CB}\\
+{_A}r_{AB} &= {_A}r_{AC} + {_A}r_{CB}\\
+{_A}r_{AB} &= {_A}r_{AC} + R_{AC}\cdot{_C}r_{CB}\\
+\begin{pmatrix}
+{_A}r_{AB} \\ 1
+\end{pmatrix}  &= \begin{bmatrix}
+R_{AC} & {_A}r_{AC} \\
+\mathbf{0}_{1\times 3} & 1
+\end{bmatrix} \begin{pmatrix}
+{_C}r_{CB} \\ 1
+\end{pmatrix} \\
+\begin{pmatrix}
+{_A}r_{AB} \\ 1
+\end{pmatrix}  &= {^A}T_{C} \begin{pmatrix}
+{_C}r_{CB} \\ 1
+\end{pmatrix}
+\end{align*}
+
+The inverse of the transformation matrix is obtained as,
+\begin{equation}
+{^A}T_{C}^{-1} = \begin{bmatrix}
+R_{AC}^T & -R_{AC}^T\cdot {_A}r_{AC} \\
+\mathbf{0}_{1\times 3} & 1
+\end{bmatrix}
+\end{equation}
+
+
+The right pseudo inverse of a matrix $A$ is given by,
+\begin{equation}
+A^{+} = A^T(AA^T)^{-1}.
+\end{equation}
+\section{Jacobians}
+The configuration of the robot is described by generalized coordinates,
+\begin{equation}
+\mathbf{q} = \begin{pmatrix}
+q_1 \\ q_2 \\ \vdots \\q_n 
+\end{pmatrix}
+\end{equation}
+
+The above set of coordinates completely describe the configuration of the system.
+
+The position and the orientation of the center of mass of link $k$ is given by,
+\begin{equation}
+\mathbf{\chi}_k(\mathbf{q}) = \begin{pmatrix}
+\mathbf{\chi}_{P_k}(\mathbf{q}) \\ \mathbf{\chi}_{R_k}(\mathbf{q})
+\end{pmatrix}
+\end{equation} 
+
+The differentiation of the position and orientation vectors results in linear and angular velocity as follows,
+\begin{align*}
+\dot{\mathbf{\chi}}_{P_k} &= \frac{\delta \mathbf{\chi}_{P_k}}{\delta \mathbf{q}} \delta \mathbf{q} \\
+\dot{\mathbf{\chi}}_{P_k} &= \mathbf{J}_{P_k}(\mathbf{q}) \delta \mathbf{q} \\
+\dot{\mathbf{\chi}}_{R_k} &= \frac{\delta \mathbf{\chi}_{R_k}}{\delta \mathbf{q}} \delta \mathbf{q} \\
+\dot{\mathbf{\chi}}_{R_k} &= \mathbf{J}_{R_k}(\mathbf{q}) \delta \mathbf{q}
+\end{align*}
+
+where,
+\begin{equation}
+\mathbf{J}_k = \begin{bmatrix}
+\frac{\delta \chi_1}{\delta q_1} & \ldots & \frac{\delta \chi_1}{\delta q_n}\\
+\vdots & \ddots & \vdots\\
+\frac{\delta \chi_m}{\delta q_1} & \ldots & \frac{\delta \chi_m}{\delta q_n}
+\end{bmatrix}
+\end{equation}
+
+Jacobian maps the generalized velocities to body's linear velocity and angular velocity. So, for a link $k$ in a robotic system, the velocity is given by,
+
+\begin{align*}
+\mathbf{v}_k &= \mathbf{J}_{P_k}\dot{\mathbf{q}}\\
+\mathbf{\omega}_k &= \mathbf{J}_{R_k}\dot{\mathbf{q}}
+\end{align*}
+
+The dimension of $\mathbf{J}_{P_k}$ and $\mathbf{J}_{R_k}$ is $3 \times n$ for euler angles parameterization.
+We club the linear velocity and angular velocity as,
+\begin{equation}
+\mathbf{w}_k = \begin{pmatrix}
+\mathbf{v}_k \\ \mathbf{\omega}_k
+\end{pmatrix} = \mathbf{J}_k \dot{\mathbf{q}}
+\end{equation}
+where,
+\begin{equation}
+\mathbf{J}_k = \begin{bmatrix}
+\mathbf{J}_{P_k} \\ \mathbf{J}_{R_k} 
+\end{bmatrix}
+\end{equation}
+
+The velocity of point $B$ can be calculated using relative kinematics equations as follows,
+\begin{align*}
+\mathbf{w}_B &= \mathbf{w}_A + \mathbf{w}_{AB}\\
+\dot{\mathbf{q}}\mathbf{J}_{B} &= \dot{\mathbf{q}}\mathbf{J}_{A} + \dot{\mathbf{q}}\mathbf{J}_{AB}\\
+\mathbf{J}_{B} &= \mathbf{J}_{A} + \mathbf{J}_{AB}  
+\end{align*}
+
+\section{Derivation of Jacobians for Quadruped}
+For the 18-DOF quadruped, the generalized position vector is defined as,
+
+\begin{equation}
+\mathbf{q} = \begin{pmatrix}
+q_1 \\ \vdots \\ q_{18}
+\end{pmatrix}\\
+\end{equation}
+
+The position vector of the floating base i.e., torso of the quadruped is given by,
+
+\begin{equation}
+\mathbf{q}_b = \begin{pmatrix}
+\mathbf{p}_{torso} \\ \mathbf{\phi}_{torso}
+\end{pmatrix} = \begin{pmatrix}
+q_1 \\ q_2 \\ q_3 \\ q_4 \\ q_5\\ q_6
+\end{pmatrix}
+\end{equation}
+
+The differentiation of the generalized position does not give the velocity, since it depends on the rotation parameterization of the floating base. 
+
+\begin{equation}
+\mathbf{u} = \mathbf{E}_R \dot{\mathbf{q}}
+\end{equation}
+$\mathbf{u}$ denotes the generalized velocity of the system, and is given as,
+\begin{equation}
+\mathbf{u} = \begin{pmatrix}
+{_I}\mathbf{v}_B \\ {_B}\mathbf{\omega}_{IB} \\ \dot{q}_7 \\ \vdots \\ \dot{q}_{18}
+\end{pmatrix}
+\end{equation}
+
+where ${_B}\mathbf{\omega}_{IB}$ is the angular velocity of the floating base whose orientation is defined using XYZ-Euler angles. 
+\begin{equation}
+{_B}\mathbf{\omega}_{IB} = \mathbf{E}_{R,XYZ}\begin{pmatrix}
+\dot{q}_4 \\ \dot{q}_5 \\ \dot{q}_6
+\end{pmatrix}
+\end{equation}
+Please look into section 19.12 for derivation of $\mathbf{E}_{R,XYZ}$ which is used to obtain the geometric jacobian.
+
+The matrix that tranforms $\dot{\mathbf{q}}$ to $\mathbf{u}$ is given by,
+
+\begin{equation}
+\mathbf{E}_R = \begin{bmatrix}
+\mathbb{I}_{3 \times 3} & & \\
+ & \mathbf{E}_{R,XYZ} & \\
+ & & \mathbb{I}_{12 \times 12}
+\end{bmatrix}
+\end{equation}
+ and the inverse of the above transformation matrix is,
+
+
+\begin{equation}
+\mathbf{E}_R^{-1} = \begin{bmatrix}
+\mathbb{I}_{3 \times 3} & & \\
+ & \mathbf{E}_{R,XYZ}^{-1} & \\
+ & & \mathbb{I}_{12 \times 12}
+\end{bmatrix}
+\end{equation}
+
+The absolute position of the torso of the quadruped is expressed in terms of generalized coordinates as,
+
+\begin{equation}
+\mathbf{p}_{torso} = {_{I}}\mathbf{r}_B = \begin{pmatrix}
+x_B \\ y_B \\ z_B
+\end{pmatrix} = \begin{pmatrix}
+q_1 \\ q_2 \\q_3
+\end{pmatrix}
+\end{equation}
+
+The absolute linear velocity of the torso is obtained through differentiating the above equation w.r.t. time,
+\begin{equation}
+{_{I}}\mathbf{v}_B = {_{I}}\dot{\mathbf{r}}_{B} = \frac{\delta {_I}\mathbf{r}_{B}}{\delta \mathbf{q}} \dot{\mathbf{q}} = \left(\frac{\delta {_I}\mathbf{r}_{B}}{\delta \mathbf{q}}\mathbf{E}_R^{-1}\right)\mathbf{u} = {_I}\mathbf{J}_{P_B} \mathbf{u}\\
+\end{equation}
+
+
+\begin{equation}
+{_I}\mathbf{J}_{P_B} = \begin{bmatrix}
+\mathbb{I}_{3 \times 3} & \mathbf{0}_{3 \times 15}
+\end{bmatrix}\mathbf{E}_R^{-1}
+\end{equation}
+
+where $_{I}\mathbf{J}_{P_B}$ is the velocity jacobian of the floating base.
+
+The angular position of the torso as expressed in XYZ Euler angles is given by, 
+\begin{equation}
+\mathbf{\phi}_{torso} = \begin{pmatrix}
+q_4 \\ q_5 \\ q_6
+\end{pmatrix}
+\end{equation}
+
+The corresponding angular velocity of the torso is,
+\begin{equation}
+{_I}\mathbf{\omega}_B = \mathbf{E}_{R,XYZ}\dot{\mathbf{\phi}}_{torso}
+\end{equation}
+
+where,
+\begin{equation}
+\mathbf{E}_{R,XYZ} = \begin{bmatrix}
+1 & 0 & sin(q_5)\\
+0 & cos(q_4) & -cos(q_5)sin(q_4)\\
+0 & sin(q_4) & cos(q_4)cos(q_5)
+\end{bmatrix}
+\end{equation}
+
+Also,
+\begin{equation}
+{_I}\mathbf{\omega}_B = \mathbf{E}_{R,XYZ} \frac{\delta \mathbf{\phi}_{torso}}{\delta \mathbf{q}} \dot{\mathbf{q}} = \left( \mathbf{E}_{R,XYZ} \frac{\delta \mathbf{\phi}_{torso}}{\delta \mathbf{q}} \mathbf{E}_R^{-1} \right) {\mathbf{u}} = {_I}\mathbf{J}_{R_B}\mathbf{u}
+\end{equation}
+
+\begin{equation}
+{_I}\mathbf{J}_{R_B} = \begin{bmatrix}
+\mathbf{0}_{3 \times 3} & \mathbb{I}_{3 \times 3} & \mathbf{0}_{3 \times 12}
+\end{bmatrix}
+\end{equation}
+where ${_I}\mathbf{J}_{R_B}$ is the angular velocity jacobian of the torso.
+
+Now, moving on to the first leg as per nomenclature(front-right (fr) leg), the transformation matrix from base to leg is defined as,
+
+\begin{equation}
+{^{base}}T_{leg,fr} = \begin{bmatrix}
+cos(\pi/2) & 0 & sin(\pi/2) & (l/2)\\
+0 & 1 & 0 & -(w/2)\\
+-sin(\pi/2) & 0 & cos(\pi/2) & 0\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\end{equation} 
+
+The next transformation from leg to hip link coordinate is defined using Modified DH-convention parameters, and the resulting transformation matrix is,
+\begin{equation}
+{^{leg,fr}}T_{h} = \begin{bmatrix}
+cos(q_7) & sin(q_7) & 0 & 0\\
+-sin(q_7) & cos(q_7) & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+
+Now, to obtain the center of mass position of the hip link, we need to transform from hip link coordinates to the center of the hip link, and the corresponding transformation matrix is defined as,
+
+\begin{equation}
+{^{h}}T_{h,CoM} = \begin{bmatrix}
+cos(q_8) & sin(q_8) & 0 & l_{h,CoM}\\
+0 & 0 & -1 & 0\\
+-sin(q_8) & cos(q_8) & 0 & 0\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+
+
+All these transformations could be multiplied to obtain the transformation from the base of the quadruped to the center of mass of the hip as follows,
+
+\begin{equation}
+{^{base}}T_{h,CoM} = {^{base}}T_{leg,fr}\cdot {^{leg,fr}}T_{h}\cdot {^{h}}T_{h,CoM} 
+\end{equation}
+
+\begin{equation}
+{^{base}}T_{h,CoM} = \begin{bmatrix}
+-sin(q_8) & cos(q_8) & 0 & l/2\\
+-cos(q_8)sin(q_7) & -sin(q_7)sin(q_8) & -cos(q_7) & -w/2 - l_{h,CoM}sin(q_7)\\
+-cos(q_7)cos(q_8) & -cos(q_7)sin(q_8) & sin(q_7) & -l_{h,CoM}cos(q_7)\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+
+The position of the center of mass of the hip link w.r.t. base is given by,
+\begin{equation}
+{_{base}}\mathbf{r}_{h,CoM} = \begin{pmatrix}
+l/2 \\ -w/2 - l_{h,CoM}sin(q_7) \\ -l_{h,CoM}cos(q_7)
+\end{pmatrix}
+\end{equation}
+
+\begin{equation}
+{_{base}}\dot{\mathbf{r}}_{h,CoM} = \frac{\delta {_{base}}\mathbf{r}_{h,CoM}}{\delta \mathbf{q}}\dot{\mathbf{q}} = \left(\frac{\delta {_{base}}\mathbf{r}_{h,CoM}}{\delta \mathbf{q}}\mathbf{E}_R^{-1}\right)\mathbf{u} = {_{base}}\mathbf{J}_{P_{h,CoM}}\mathbf{u}  
+\end{equation}
+
+\begin{equation}
+{_{base}}\mathbf{J}_{P_{h,CoM}} = \begin{bmatrix}
+\mathbf{0}_{3 \times 6} & {_{base}}\mathbf{a}_{P_{h}} &\mathbf{0}_{3 \times 11}
+\end{bmatrix}\mathbf{E}_R^{-1}
+\end{equation}
+ 
+where,
+\begin{equation}
+{_{base}}\mathbf{a}_{P_{h}} = \begin{pmatrix}
+0 \\ -l_{h,CoM}cos(q_7) \\ l_{h,CoM}sin(q_7)
+\end{pmatrix}
+\end{equation}
+
+Now, calculating the angular velocity of the hip link and the cooresponding Jacobian matrix, 
+\begin{equation}
+{_I}\mathbf{\omega}_{h,CoM} = {_I}\mathbf{\omega}_B + {_I}\mathbf{\omega}_{Bh,CoM} = {_I}\mathbf{\omega}_B + R_{IB}\cdot {_B}\mathbf{\omega}_{Bh,CoM} 
+\end{equation}
+
+where ${_I}\omega_{Bh,CoM}$ and ${_B}\omega_{Bh,CoM}$ are the angular velocity of the center of mass of hip w.r.t. base, when observed in the inertial frame and body frame respectively.
+
+The angular position of the hip w.r.t. the base could be expressed as, 
+\begin{equation}
+\mathbf{\phi}_{Bh,CoM} = \begin{pmatrix}
+q_7 \\ 0 \\ 0
+\end{pmatrix}
+\end{equation}
+
+\begin{equation}
+{_B}\mathbf{\omega}_{Bh,CoM} = \frac{\delta \mathbf{\phi}_{Bh,CoM}}{\delta \mathbf{q}} \dot{\mathbf{q}} = \left( \frac{\delta \mathbf{\phi}_{Bh,CoM}}{\delta \mathbf{q}} \mathbf{E}_R^{-1} \right) {\mathbf{u}} = {_B}\mathbf{J}_{R_{Bh,CoM}}\mathbf{u}
+\end{equation}
+
+\begin{equation}
+{_B}\mathbf{J}_{R_{Bh,CoM}} = \begin{bmatrix}
+\mathbf{0}_{3\times 6} & \mathbf{e}_x & \mathbf{0}_{3\times 11} 
+\end{bmatrix}
+\end{equation}
+where,
+\begin{equation}
+\mathbf{e}_x = \begin{pmatrix}
+1 \\ 0 \\ 0
+\end{pmatrix}
+\end{equation}
+
+Using above two equations, we get
+\begin{equation}
+{_I}\mathbf{J}_{R_h} = {_I}\mathbf{J}_{R_B} + R_{IB}\cdot{_B}\mathbf{J}_{R_{Bh,CoM}} 
+\end{equation}
+where, $R_{IB}$ is obtained from the computed transformation matrix ${^{global}}T_{base}$ as follows,
+
+\begin{equation}
+R_{IB} = \begin{bmatrix}
+cos(q_6)cos(q_5) & cos(q_6)sin(q_5)sin(q_4)-cos(q_4)sin(q_6) & sin(q_6)sin(q_4)+cos(q_6)cos(q_4)sin(q_5)\\
+cos(q_5)sin(q_6) & cos(q_6)cos(q_4)+sin(q_6)sin(q_4)sin(q_5) & cos(q_4)sin(q_6)sin(q_5)-cos(q_6)sin(q_4)\\
+-sin(q_5) & cos(q_5)sin(q_4) & cos(q_5)cos(q_4)
+\end{bmatrix}
+\end{equation}
+
+The resulting rotational jacobian for the hip link w.r.t. the inertial frame is,
+\begin{equation}
+{_I}\mathbf{J}_{R_h} = \begin{bmatrix}
+\mathbf{0}_{3\times 3} & \mathbb{I}_{3\times 3} & \mathbf{a}_{R_h} & \mathbf{0}_{3\times 11} 
+\end{bmatrix}
+\end{equation}
+where,
+\begin{equation}
+\mathbf{a}_{R_h} = \begin{pmatrix}
+-cos(q_6)cos(q_5) \\ -cos(q_5)sin(q_6) \\ sin(q_5)
+\end{pmatrix}
+\end{equation}
+
+The angular velocity of the hip w.r.t. base could have been determined also using relative kinematics as follows,
+ 
+\begin{equation}
+{_B}\mathbf{\omega}_{Bh,CoM} = {_B}\mathbf{\omega}_{Bh}  + R_{Bh}\cdot{_{h}}\mathbf{\omega}_{h,CoM} = \mathbf{0} + R_{Bh}\cdot{_{h}}\mathbf{\omega}_{h,CoM}
+\end{equation} 
+So, we have
+\begin{equation}
+{_I}\mathbf{\omega}_{h,CoM} = {_I}\mathbf{\omega}_B + {_I}\mathbf{\omega}_{Bh,CoM} = {_I}\mathbf{\omega}_B + R_{IB}\cdot R_{Bh} \cdot{_{h}}\mathbf{\omega}_{h,CoM} 
+\end{equation}
+\begin{equation}
+{_I}\mathbf{\omega}_{h,CoM} = {_I}\mathbf{\omega}_B + R_{Ih}\cdot{_{h}}\mathbf{\omega}_{h,CoM} = {_I}\mathbf{J}_{R_h}\mathbf{u}
+\end{equation}
+where $R_{Ih}$ is the rotation matrix that tranform the inertial frame to the local hip frame.
+
+The angular position of the hip center of mass, $\phi_{h,CoM}$  is defined in terms of the coordinate axis of hip with rotating axis aligned in z-direction as per modified DH-convention as,
+
+\begin{equation}
+\mathbf{\phi}_{h,CoM} = \begin{pmatrix}
+0 \\ 0 \\ -q_7
+\end{pmatrix}
+\end{equation}
+\begin{equation}
+{_{h}}\mathbf{\omega}_{h,CoM} = \frac{\delta \mathbf{\phi}_{h,CoM}}{\delta \mathbf{q}} \dot{\mathbf{q}} = \left( \frac{\delta \mathbf{\phi}_{h,CoM}}{\delta \mathbf{q}} \mathbf{E}_R^{-1} \right) {\mathbf{u}} = {_{h}}\mathbf{J}_{R_{h,CoM}}\mathbf{u}
+\end{equation}
+where, the jacobian turns out to be
+\begin{equation}
+{_{h}}\mathbf{J}_{R_{h,CoM}} = \begin{bmatrix}
+\mathbf{0}_{3 \times 6} & -\mathbf{e}_z & \mathbf{0}_{3 \times 11}
+\end{bmatrix}
+\end{equation}
+
+We finally obtain the rotational jacobian w.r.t. the inertial frame as follows,
+\begin{equation}
+{_{I}}\mathbf{J}_{R_{h}} = {_I}\mathbf{J}_{R_B} + R_{Ih}\cdot{_{h}}\mathbf{J}_{R_{h,CoM}}
+\end{equation}
+
+The above method helps keep track of the complications arriving in the process as we move down the kinematic chain. The angular velocity of thigh link can be written similarly as,
+
+\begin{equation}
+{_I}\mathbf{\omega}_{t,CoM} = {_I}\mathbf{\omega}_{h,CoM} + R_{It}\cdot{_{t}}\mathbf{\omega}_{t,CoM}
+\end{equation}
+where,
+\begin{equation}
+\mathbf{\phi}_{t,CoM} = \begin{pmatrix}
+0 \\ 0\\ -q_8
+\end{pmatrix}
+\end{equation}
+
+\begin{equation}
+{_t}\mathbf{\omega}_{t,CoM} = \frac{\delta \mathbf{\phi}_{t,CoM}}{\delta \mathbf{q}} \dot{\mathbf{q}} = \left( \frac{\delta \mathbf{\phi}_{t,CoM}}{\delta \mathbf{q}} \mathbf{E}_R^{-1} \right) {\mathbf{u}} = {_t}\mathbf{J}_{R_{t,CoM}}\mathbf{u}
+\end{equation}
+
+where, the jacobian in the thigh frame becomes,
+\begin{equation}
+{_t}\mathbf{J}_{R_{t,CoM}} = \begin{bmatrix}
+\mathbf{0}_{3 \times 7} & -\mathbf{e}_z & \mathbf{0}_{3 \times 10}
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+{_I}\mathbf{J}_{R_{t}} = {_I}\mathbf{J}_{R_{h}} + R_{It}\cdot{_t}\mathbf{J}_{R_{t,CoM}}
+\end{equation}
+
+Similarly for shank link, we get
+\begin{equation}
+{_I}\mathbf{J}_{R_{s}} = {_I}\mathbf{J}_{R_{t}} + R_{Is}\cdot{_s}\mathbf{J}_{R_{s,CoM}}
+\end{equation}
+
+\section{EOM: Fixed Base systems}
+
+For fixed base systems, $\mathbf{u} = \dot{\mathbf{q}}$
+
+\begin{equation}
+\mathbf{M(q)\ddot{q} + b(q,\dot{q}) + g(q)} = \mathbf{S}^{T}\mathbf{\tau} + \mathbf{J}_{c}^{T}\mathbf{F}_{c}
+\end{equation}
+
+\begin{align*}
+\begin{bmatrix}
+\dot{p}_i\\ \dot{N}_i
+\end{bmatrix}
+&= 
+\begin{bmatrix}
+m_i\mathbf{a}_i \\ I_i\mathbf{\Psi}_i + \mathbf{\Omega}_i \times I_i\mathbf{\Omega}_i
+\end{bmatrix}\\
+&= \begin{bmatrix}
+m_i \mathbf{J}_{P_i} \\ I_i \mathbf{J}_{R_i}
+\end{bmatrix}\ddot{\mathbf{q}} + \begin{bmatrix}
+m_i\dot{\mathbf{J}}_{P_i}\dot{\mathbf{q}} \\ I_i\dot{\mathbf{J}}_{R_i}\dot{\mathbf{q}}+ \mathbf{J}_{R_i}\dot{q}\times I_i \mathbf{J}_{R_i}\dot{\mathbf{q}}
+\end{bmatrix}
+\end{align*}
+
+\begin{equation}
+\sum_{i=1}^{n_B}\begin{pmatrix}
+\mathbf{J}_{P_i}\\ \mathbf{J}_{R_i}
+\end{pmatrix}^T \begin{pmatrix}
+m_i \mathbf{J}_{P_i}\\ I_i \mathbf{J}_{R_i}
+\end{pmatrix}\ddot{\mathbf{q}} + \begin{pmatrix}
+\mathbf{J}_{P_i}\\ \mathbf{J}_{R_i}
+\end{pmatrix}^T \begin{pmatrix}
+m_i \dot{\mathbf{J}}_{P_i}\dot{\mathbf{q}} \\ I_i \dot{\mathbf{J}}_{R_i} \dot{\mathbf{q}} + \mathbf{J}_{R_i}\dot{\mathbf{q}} \times I_i \mathbf{J}_{R_i}\dot{\mathbf{q}}
+\end{pmatrix} - \begin{pmatrix}
+\mathbf{J}_{P_i}\\ \mathbf{J}_{R_i}
+\end{pmatrix}^T \begin{pmatrix}
+F_{ext,i}\\T_{ext,i}
+\end{pmatrix} = \mathbf{0}
+\end{equation}

@@ -1,0 +1,301 @@
+% Chapter Template
+
+\chapter{Results and Discussion} % Main chapter title
+
+\label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+\lhead{Chapter 5. \emph{Results and Discussion}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+
+The chapter presents the results of the walking of biped and quadruped models. The focus is kept on gait planning and optimization of the quadruped model. The experiments are performed on Nybble, a robotic cat, for multiple gaits. 
+%using position-based control.
+  
+%The walking of simple 2-dimensional sagittal plane biped models with feedback control for a level surface, and passive model for a shallow slope are discussed. 
+   
+\section{Three-Link Biped Model}\label{3link}
+
+The three-link biped model with nonlinear feedback control is implemented with parameters taken from \citep{westervelt2018feedback}. A detailed control design procedure can be found in \citep{grizzle2001asymptotically}.
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.6]{Three_link_snip.PNG}
+    \caption[Three-Link Biped Stick Diagram]{Three-Link Biped: Stick Diagram for five half cycles with the red leg as stance leg and blue leg as swing leg.}
+    \label{fig:stick3}
+\end{figure}
+Figure \ref{fig:stick3} shows the stick diagram of the model for five half gait cycles. The three-link model suffers from foot-scuffing due to the absence of knee. It does not model the human walking to a satisfactory level but serves as a good starting point. 
+
+
+
+
+\section{Four-Link Kneed Biped Model}\label{4link}
+The four-link kneed biped model could passively walk down a shallow slope, given an initial condition. The initial condition for which the stable periodic orbit exists is called the fixed point.   
+
+For a given initial condition near the fixed point, the walking simulation is run for five half cycles. Figure \ref{fig:energy} shows the results for the energy of the biped with constant mechanical energy of the system with spikes in kinetic energy when the potential energy dips, for the given slope and physical parameters of the robot.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=50 0 0 0, clip,scale=0.33]{pdw_energy_plot.eps}
+    \caption[Energy Diagram for Four-Link Kneed Biped Model for 5 half cycles]{Energy Diagram for 5 half cycles, depicting constant total mechanical energy of the system, with transfer of energy from potential to kinetic energy and back to potential energy in a complete cycle.}
+    \label{fig:energy}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=50 0 0 0, clip,scale=0.33]{pdw_limit_cycle_1.eps}
+    \caption[Limit Cycle for Four-Link Kneed Biped Model]{Stability Limit Cycle for one full cycle: 1-2: Unlocked Knee Phase, 2-3: Kneestrike, 3-4: Locked Knee Phase, 4-1: Heelstrike }
+    \label{fig:limit}
+\end{figure}
+
+The limit cycle of the four-link kneed walker is shown in Fig. \ref{fig:limit}. The upper half of the curve represents the swing phase of the leg, and the lower half represents the stance phase. The motion starts from an initial condition from point \lq 1\rq{} in unlocked knee phase till point \lq 2\rq{} where there is a vertical jump in velocity to point \lq 3\rq{} without the change in position, representing the knee locking event. This is followed by the locked knee phase to point \lq 4\rq, leading to a heelstrike event with a velocity shift from point \lq 4\rq{} to point \lq 1\rq. After one complete gait cycle, the conditions return to be the same as the initial condition, depicting the fixed point of the stable limit cycle. The link to the animation video is \href{https://drive.google.com/open?id=1z1Fs0hKxXSM2I5II_YVG0Hvq0Z2K4Y_a}{here}.
+
+%The study of passive...     
+
+%-----------------------------------
+%	SUBSECTION 1
+%-----------------------------------
+\section{Quadruped Gait Planning and Optimization}\label{OptiResults}
+
+The Interior-point method is used for NLP optimization to obtain the desired body trajectory and foothold positions. The initial iteration is performed for fixed foothold positions, given a goal position in a straight line with the initial position. The footstep planner decides the number of steps required to reach the goal position and then generates the foothold positions beforehand. The sequence of steps (phase plan) is pre-defined based on the optimal walking sequence.
+
+An optimized body trajectory is generated for given hyper-parameters, namely, stability margin $m$ for the ZMP to lie inside the support polygon, and the time interval $n*t_k$ of transition from one support polygon to another through four-leg support phase. Figure \ref{fig:TO1} shows the optimized body trajectory from initial position $(0,0)$ to goal position $(1.25,0)$ for a step length of 0.25m. The ZMP stability margin $m = 0.5cm$ and the transition interval $t_k (n = 1)$, i.e., single time step of the simulation.  
+ 
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=50 0 0 0, clip,scale=0.35]{optifix1.eps}
+    \caption[Optimized body trajectory for 5 steps with fixed foothold positions]{Optimized body trajectory for 5 steps with fixed foothold positions. The path is optimized for single step at once. The ZMP stability margin is set to 0.5 cm}
+    \label{fig:TO1}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=50 0 0 0, clip,scale=0.35]{optivar2.eps}
+    \caption[Optimized body trajectory for 5 steps with variable foothold positions]{Optimized body trajectory for 5 steps with variable foothold positions for a stability margin of 8cm}
+    \label{fig:TO2}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=50 0 0 0, clip,scale=0.35]{opti0p05.eps}
+    \caption[Optimized body trajectory for 5 steps with variable foothold positions]{Optimized body trajectory for 5 steps with variable foothold positions for a stability margin of 5cm}
+    \label{fig:TO3}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=50 0 0 0, clip,scale=0.35]{opti0p02.eps}
+    \caption[Optimized body trajectory for 5 steps with variable foothold positions]{Optimized body trajectory for 5 steps with variable foothold positions for a stability margin of 2cm}
+    \label{fig:TO4}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=50 0 0 0, clip,scale=0.35]{opti0p01.eps}
+    \caption[Optimized body trajectory for 5 steps with variable foothold positions]{Optimized body trajectory for 5 steps with variable foothold positions for a stability margin of 1cm}
+    \label{fig:TO5}
+\end{figure}
+%figure: try continuation of slopes between steps for the quadruped
+The foothold placement and body trajectory are inherently connected, and their simultaneous optimization is presented. The position of the feet are restricted by kinematic reachability constraint based on the robot physical parameters.
+
+The figure shows the initial position and the desired final position with initial footholds as square markers. Based on the goal position, the number of steps is determined, and the optimization problem is solved, as described in Section \ref{varfoot}.
+
+Figures \ref{fig:TO2}-\ref{fig:TO5} shows the optimized body trajectory and foothold positions for different values of the ZMP stability margin. As the stability margin constraint is relaxed, the body trajectory becomes straighter. This could be attributed to the decrease in the shift of ZMP required during the phase change process, to move from one support polygon to the next. A more stringent stability margin requires the body to adjust the accelerations and the footholds to attain the desired constraint through increasing the size of support polygon by spreading out the feet.
+
+%The generated path follows ZMP stability criteria. 
+%-----------------------------------
+%	SUBSECTION 2
+%-----------------------------------
+
+% ADD Results when available
+\section{Motion Control}\label{ffcontrol}
+The reference trajectory generated from the NLP optimization solver is first mapped to full body states. The reference body trajectory and joint trajectories are given by Eqs. \ref{eq:qbref} and \ref{eq:qaref}. The simulation parameters of the quadruped are mentioned in Table \ref{tab:params}. 
+
+Figure \ref{fig:CRef1} shows the reference joint trajectory for Front-Right leg for walking two steps. The duration of each phase is $T_j = 0.25s$, and the reference trajectory is generated at 100Hz, i.e., $t_k = 0.01s$. As discussed earlier, an initial four leg support phase is added. The joint trajectory is continuous and we can obtain the desired joint velocities for the quadruped using numerical integration (backward differentiation). Due to phase changes, the joint velocities changes instantaneously, which is approximated using numerical methods. These joint velocities does not follow contact constraints, i.e., $J_c\mathbf{u} \neq 0$. In the figure, the swing phase of the leg is highlighted in red.      
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=120 0 0 0, clip,scale=0.37]{refTrajJuly7.eps}
+    \caption[Reference leg trajectory for 2 steps]{Optimized reference leg trajectory for 2 steps }
+    \label{fig:CRef1}
+\end{figure}
+
+Similarly, Fig. \ref{fig:CRef2} shows the reference joint trajectories and joint velocities for Front Left (FL) leg.
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=120 0 0 0, clip,scale=0.37]{refTrajJuly7_2.eps}
+    \caption[Reference leg trajectory for 2 steps]{Optimized reference leg trajectory for 2 steps }
+    \label{fig:CRef2}
+\end{figure}
+
+Since the reference trajectories are generated using a simplified cart-table model, these are not consistent with contact constraints and impact dynamics. This poses challenges in the design of the control system for the quadruped model.
+
+The reference joint accelerations are generated using the desired feet accelerations as given in Eq. \ref{eq:qrefddot}. This helps in obtaining contact constraint consistent accelerations of the model. 
+
+Using the desired accelerations $\ddot{\mathbf{q}}_{ref}$, the feedforward joint torques are obtained using inverse dynamics, before we project the equation of motion into the null space of the contact Jacobian. Once we obtain the required torques, the corresponding ground reaction forces are also calculated using Eq. \ref{eq:Fc}.
+
+\begin{equation}
+\boldsymbol{\tau}_{ff} = (N_c^{T}S^T)^{+}N_c^{T}({M\mathbf{\ddot{q}}_{ref} + \mathbf{b} + \mathbf{g}}).
+\end{equation}
+
+The feedforward torques and corresponding ground reaction forces are shown in Fig. \ref{fig:CRef3}. As the leg moves into the swing phase, there are no contact forces acting on the leg. Also, the major distribution of the contact force is on the diagonally opposite pair of stance legs. Since the torso of the quadruped is un-actuated, the contact forces from the feet and their distribution among stance legs help in controlling the body trajectory. Also, the contact forces are unilateral, i.e., the forces from the ground can only push the robot and not pull, which poses challenges in control.
+ 
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=120 0 0 0, clip,scale=0.37]{refTFJuly8s.eps}
+    \caption[Feedforward Torques and Contact Forces during walking]{Feedforward Torques and Contact Forces during walking}
+    \label{fig:CRef3}
+\end{figure}
+
+We have discussed feedforward control of the quadruped using a complete dynamic model, and the design of feedback control can be addressed in future work. The system being hybrid poses multiple challenges of stability and control design. 
+
+%----------------------------------------------------------------------------------------
+%	SECTION 2
+%----------------------------------------------------------------------------------------
+\section{Simulation environments}
+
+The table shows the quadruped parameters used in the simulation. The parameters are chosen such that the moving parts are light-weight, and all the actuation systems are present in the torso. The inertia of the leg is kept small to minimize the required joint torques. 	
+ 
+\begin{table}[!htb]\label{tab:params}
+\caption{Quadruped Parameters used in simulation}
+% write to get table number
+\begin{center}
+\begin{tabular}{ |p{5cm}|p{2cm}|p{3cm}|  }
+ \hline
+ Robot parameters  &  Symbol & Value with units\\
+ \hline
+ Torso Mass & $M$ & 10 Kg\\
+ Torso Length & $l$ & 600 mm\\
+ Torso Width & $w$ & 420 mm\\
+ Hip Length & $l_h$ & 80 mm\\
+ Hip Mass & $m_h$ & 0.6 Kg\\
+ Thigh Length & $l_t$ & 200 mm\\ 
+ Thigh Mass & $m_t$ & 1.2 Kg\\ 
+ Shank Length & $l_s$ & 230 mm \\
+ Shank Mass & $m_s$ & 0.3 Kg\\ 
+ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{Quadruped CAD Model}
+A CAD model of the quadruped robot is created with a convenient selection of coordinate system and axes based on the Modified DH convention to generate a URDF model with meshes of each body part.
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=500 100 200 100,clip,scale=0.22]{quadroit_render1.JPG}
+    \caption{Quadruped CAD model}
+    \label{fig:SW}
+\end{figure}
+The simplified modeling is done focusing on appropriate link lengths and allowed degrees of freedom at each joint, along with the torso dimensions. 
+
+\subsection{URDF model}
+A URDF model of the robot is created to simulate it in a ROS environment \cite{quigley2009ros}, in XML and XACRO (XML Macros) format. It considers the robot's kinematic tree with inertial, collision, and visual properties for each link and dynamic properties for joints. This is used to obtain the dynamics of the robot through available libraries, and visualization of the robot for simulations. The robot model is added with joint controls in an RViz model. 
+  
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=20 0 0 0,clip,scale=0.45]{quadroit_v1.pdf}
+    \caption{URDF Kinematic Tree of the Quadruped}
+    \label{fig:urdf}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=200 0 200 200,clip,scale=0.4]{rviz_screenshot_qv1.png}
+    \caption[RViz Quadruped Model with joint coordinate frames]{RViz Robot Model with joint coordinate frames (Blue-Z-axis; Red-X-axis) based on Modified DH convention}
+    \label{fig:rviz}
+\end{figure}
+
+\subsection{Pybullet environment}
+
+Due to the ease of modeling and fast computation, the Pybullet environment \citep{coumans2016pybullet} is used to perform quadruped simulations. The quadruped model is loaded from a URDF file to perform the physics-based simulation. The environment is loaded from the URDF Pybullet library. The collision interaction between the robot model and the environment is modeled as purely inelastic, i.e., the coefficient of restitution is set to zero, and the coefficient of friction is set to unity. 
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.28]{pybullet_env2.png}
+    \caption{Quadruped Model in Pybullet}
+    \label{fig:pyb2}
+\end{figure}
+
+The model uses rigid body dynamic equations derived based on floating base systems using the Newton-Euler method. The forward dynamics is evaluated through the Articulated body algorithm (ABA), and the inverse dynamics is calculated through the Recursive Newton Euler algorithm (RNEA). Both these algorithms are modified for the floating base system. A detailed description of the algorithms can be found in \citep{featherstone2014rigid}. 
+%(Required algorithms in Appendix?)
+  
+\section{Nybble: Arduino Framework}
+
+The Arduino cat, Nybble, developed by Petoi\footnote{Petoi Documentation: \href{https://docs.petoi.com/}{{\color{blue}\underline{\smash{https://docs.petoi.com/}}}}, OpenCat Github: \href{https://github.com/PetoiCamp/OpenCat}{{\color{blue}\underline{\smash{github.com/PetoiCamp/OpenCat}}}}}, is a robotic cat with a total of 8 DOF for walking, with 2 DOF in each leg. The control board is custom-designed for Arduino with processor ATmega328P (5V, 20MHz).
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[trim=100 150 0 0,clip,scale=0.07]{nybble_I.jpeg}
+    \caption{Nybble, a robotic cat developed by Petoi}
+    \label{fig:nybble}
+\end{figure}
+
+The board has an infrared (IR) receiver, an active buzzer, and a provision of connecting ultraviolet (UV) sensors. It has 16 channel PWM pin for servos. There are eleven servos in use; eight are used for legs, one for the tail, one for the neck, and one for the head.  
+
+A total of 16 PWM servo pins can accommodate one additional degree of freedom in each leg, i.e., the hip joint, as modeled in our robot. For motion tracking, the board uses the MPU6050 sensor module, which includes a 3-axis gyroscope and a 3-axis accelerometer. The controller board (Nyboard) requires two standard 14500 800mAh 3.7V li-ion batteries. 
+
+It uses FTDI Port for uploading Arduino sketches. The FTDI uploader is connected through mini-USB to USB cable. The servo motors used in the robot, MG90D, and MG92B, are light-weight, high torque metal gear servos.
+
+
+%Battery and Power requirements\\
+%When connected with Rpi, it will require more power and hence better batteries.
+%The control board can be connected with Raspberry Pi 4, using a 2X5 socket, which includes power, UART, reset, I2C, and I2C reference.	
+%\begin{itemize}
+%\item MG90D
+%\item MG92B
+%\end{itemize}
+%The detailed specifications can be found at \href{towerpro.com.tw/product/mg90d}{link}.
+
+\section{Perception and Path Planning}
+
+The objective is to generate a plan given a robot surrounding beforehand. All the vision task is performed on the computer, to generate a PWM series input to the robotic cat, Nybble, to follow the desired path.
+ 
+A robot workspace is created at home for the task of perception and planning, as shown in Fig. \ref{fig:rw}. A single mobile camera (Xiaomi Redmi Note 4 13MP camera with $f/2.0$ aperture) is used to capture the workspace.
+
+\begin{figure}[!htb]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.9\linewidth]{Obs_main.jpg}
+  \caption*{(a) Robot Workspace with obstacles (Raw Image)}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.9\linewidth]{contour_ws.jpg}
+  \caption*{(b) Detected workspace contour (in green)}
+%  \label{fig:contour}
+\end{minipage}
+\caption{(a) The robot workspace with multiple obstacles, (b) Workspace contour detected using Image processing techniques}
+\label{fig:rw}
+%\width=0.9\linewidthend{figure}
+\end{figure}
+
+The camera is calibrated using the checkerboard pattern to obtain the properties of the camera, which helps to obtain an undistorted image. All the image processing tasks are performed using OpenCV \citep{opencv_library}.
+
+The raw image is undistorted first and then processed through multiple morphological transformations to detect the contour of the workspace as shown in Fig. \ref{fig:rw}. The image is then warped to obtain a top view of the workspace as shown in Fig. \ref{fig:warp}. 
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.09]{warped_manual_aspect.jpg}
+    \caption{Warped image with manual set aspect ratio}
+    \label{fig:warp}
+\end{figure}
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=0.33]{astar_snip}
+    \caption{Path planning using A* algorithm}
+    \label{fig:astar}
+\end{figure}
+
+A binary image is formed after the segmentation of the image to detect obstacles. With planar workspace and the objective to avoid obstacles rather than climbing over them, a 2D grid map is formed with obstacles to create a safe path plan.      
+%A trained deep learning model is used to obtain the depth features of the image from a single picture. The model predicts the depth map from a single image with decent accuracy \citep{monodepth2}. 
+
+Given the initial and goal position on the 2D workspace, the shortest continuous path is obtained using a grid-based $A^{*}$ planning algorithm \citep{nilsson2014principles}, avoiding all obstacles through a safe distance as shown in Fig. \ref{fig:astar}.
+
+The Pybullet model is modified to limit the third degree of freedom of the hip joint to simulate the robotic cat model. The simulations are performed with the approximate path plan to obtain the desired joint trajectories of the quadruped. Differential turning is used for both Nybble and the modified Pybullet model since the robot has only 2 degrees of freedom in each leg. These joint trajectories are followed using position-based control in the Pybullet environment before implementing the same on Nybble.
+
+The PWM series input for joint trajectories is then fed into the Nybble model to follow the desired path trajectory. There are slight visually-observed variations between the path followed by the simulation model and the actual experiment on Nybble due to the differences in the modeling of the environment. Slipping is prominent in the experiment due to the surface, which is not the case while modeling in the simulation environment, where the friction coefficient is kept high.   
+
+%In the simulation environment, given the planned path, footstep planning is done along the curvilinear path to reach the goal position. 
+%The approximate path generated through the $A^{*}$ path planner is used in the optimization problem to obtain the body trajectory and foothold positions.
+
+The performed simulations can be extended for non-planar workspaces with improved algorithms for planning and control to perform multiple dynamic gaits. Also, modifications in the Nybble model to incorporate three degrees of freedom in each leg is the next step forward, for testing all the designed gait simulations. 
+
