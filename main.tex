@@ -6,7 +6,6 @@
 \usepackage{caption}
 \usepackage{amsmath}
 \usepackage{listings}
-
 \usepackage{xcolor}
 \usepackage{pdfpages}
 
@@ -46,6 +45,7 @@
 
 %\usepackage{subcaption} %incompatible with subfig
 \graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
+\lstset{inputpath={Codes/}} % Specifies the directory where codes are stored 
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage[square, numbers]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' v
@@ -96,7 +96,7 @@
 
 \href{http://home.iitk.ac.in/~username}{\authornames}
 
-(154320)\\ to the
+(\rollno)\\ to the
 
 \vfill
 \graphicspath{ {./Pictures/} }
@@ -107,7 +107,7 @@
 
 \textbf{\DEPTNAME}\\ % Research group name and department name
 \textsc{ \UNIVNAME}\\[1.5cm] % University name
-\large {July, 2020}\\[2cm] % Date
+\large {\submit}\\[2cm] % Date
 
 
 \end{center}
@@ -140,15 +140,16 @@ It is certified that the work contained in this thesis entitled ``\ttitle'' by `
 \vspace{30mm}
 \begin{minipage}{0.4\textwidth}
 	\begin{flushleft} \large
-		{\large {July, 2020}}\\[2cm] % Date
+		{\large {\submit}}\\[2cm] % Date
 	\end{flushleft}
 \end{minipage}
 \begin{minipage}{0.6\textwidth}
 	{\begin{flushright} \large
-		Dr. X-2
+		\cosupname
+		% change department here, if co-supervisor is not from your department
 		\begin{flushright}
 			{
-			\normalsize{Department of Aerospace Engineering\\
+			\normalsize{\deptname\\
 			\univname}}
 		\end{flushright}
 	\end{flushright}}
@@ -156,7 +157,6 @@ It is certified that the work contained in this thesis entitled ``\ttitle'' by `
 \vfill{}}
 \clearpage % Start a new page
 %-----------------------------------------------------------------------
-
 % Include pdf pages of scanned certificate and declaration forms
 %\includepdf[pages={1}, offset = 85.5 -71.5, scale=0.8]{stampedcerti.pdf}
 %\includepdf[pages={1},frame, offset = 71.5 -71.5]{declaration.pdf}
@@ -167,7 +167,7 @@ It is certified that the work contained in this thesis entitled ``\ttitle'' by `
 %	Your institution may give you a different text to place here
 \Declaration{{\vspace{1em}} % Add a gap in the Contents, for aesthetics
 
-This is to certify that the thesis titled ``\ttitle'' has been authored by me. It presents the research conducted by me under the supervision of Dr. X and Dr. X-2.
+This is to certify that the thesis titled ``\ttitle'' has been authored by me. It presents the research conducted by me under the supervision of \supname\ and \cosupname.
 
 To the best of my knowledge, it is an original work, both in terms of research content and narrative, and has not been submitted elsewhere, in part or in full, for a degree. Further, due credit has been attributed to the relevant state-of-the-art and collaborations (if any) with appropriate citations and acknowledgements, in line with established norms and practices.
 \\[4cm]

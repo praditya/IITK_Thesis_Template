@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2020.3.23)  15 AUG 2020 11:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2020.3.23)  23 AUG 2020 15:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -939,25 +939,25 @@ Package pdftex.def Info: ./Pictures/redlogo.jpg used on input line 105.
  Certificate
 ------------------------------------------------------------------------------
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--156
+Underfull \hbox (badness 10000) in paragraph at lines 157--157
 
  []
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 156.
+LaTeX Font Info:    Try loading font information for U+msa on input line 157.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 156.
+LaTeX Font Info:    Try loading font information for U+msb on input line 157.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (2.43332pt too wide) in paragraph at lines 156--156
+Overfull \hbox (2.43332pt too wide) in paragraph at lines 157--157
 []$[]$ $[]$ 
  []
 
 
-Overfull \hbox (2.43332pt too wide) in paragraph at lines 156--156
+Overfull \hbox (2.43332pt too wide) in paragraph at lines 157--157
 []$[]$ $[]$ 
  []
 
@@ -1073,47 +1073,44 @@ Chapter 1.
 ------------------------------------------------------------------------------
  1 Introduction
 ------------------------------------------------------------------------------
-<Pictures/bigdog.jpg, id=234, 106.70738pt x 127.0788pt>
-File: Pictures/bigdog.jpg Graphic file (type jpg)
-
-<use Pictures/bigdog.jpg>
-Package pdftex.def Info: Pictures/bigdog.jpg used on input line 22.
-(pdftex.def)             Requested size: 138.91393pt x 165.43896pt.
-
-<Pictures/hyq.jpeg, id=235, 268.00125pt x 189.70876pt>
-File: Pictures/hyq.jpeg Graphic file (type jpg)
- <use Pictures/hyq.jpeg>
-Package pdftex.def Info: Pictures/hyq.jpeg used on input line 27.
-(pdftex.def)             Requested size: 213.71576pt x 151.28088pt.
-
 
 Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
-less on input line 38.
+less on input line 14.
 
 [1
 
 
 
- <./Pictures/bigdog.jpg> <./Pictures/hyq.jpeg>]) (./Chapters/Chapter2.tex
-[2]
+] <Pictures/bigdog.jpg, id=240, 106.70738pt x 127.0788pt>
+File: Pictures/bigdog.jpg Graphic file (type jpg)
+
+<use Pictures/bigdog.jpg>
+Package pdftex.def Info: Pictures/bigdog.jpg used on input line 24.
+(pdftex.def)             Requested size: 138.91393pt x 165.43896pt.
+
+<Pictures/hyq.jpeg, id=241, 268.00125pt x 189.70876pt>
+File: Pictures/hyq.jpeg Graphic file (type jpg)
+ <use Pictures/hyq.jpeg>
+Package pdftex.def Info: Pictures/hyq.jpeg used on input line 29.
+(pdftex.def)             Requested size: 213.71576pt x 151.28088pt.
+) (./Chapters/Chapter2.tex [2 <./Pictures/bigdog.jpg> <./Pictures/hyq.jpeg>]
 Chapter 2.
 ------------------------------------------------------------------------------
  2 Mathematical Modelling
 ------------------------------------------------------------------------------
-<Pictures/trans_T.PNG, id=265, 542.77782pt x 423.83344pt>
-File: Pictures/trans_T.PNG Graphic file (type png)
-
-<use Pictures/trans_T.PNG>
-Package pdftex.def Info: Pictures/trans_T.PNG used on input line 30.
-(pdftex.def)             Requested size: 244.24776pt x 190.72327pt.
-) (./Chapters/Chapter3.tex
 
 Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
-less on input line 3.
+less on input line 21.
 
 [3
 
-] [4 <./Pictures/trans_T.PNG>]
+] <Pictures/trans_T.PNG, id=271, 542.77782pt x 423.83344pt>
+File: Pictures/trans_T.PNG Graphic file (type png)
+
+<use Pictures/trans_T.PNG>
+Package pdftex.def Info: Pictures/trans_T.PNG used on input line 33.
+(pdftex.def)             Requested size: 244.24776pt x 190.72327pt.
+) (./Chapters/Chapter3.tex [4 <./Pictures/trans_T.PNG>]
 Chapter 3.
 ------------------------------------------------------------------------------
  3 Model Design
@@ -1201,7 +1198,7 @@ Appendix C.
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-(./sample_code.m))
+(./Codes/sample_code.m))
 
 Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
 less on input line 348.
@@ -1222,10 +1219,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 350.
  ) 
 Here is how much of TeX's memory you used:
- 15822 strings out of 494910
- 216840 string characters out of 6179836
- 322286 words of memory out of 5000000
- 18746 multiletter control sequences out of 15000+600000
+ 15828 strings out of 494910
+ 216902 string characters out of 6179836
+ 322329 words of memory out of 5000000
+ 18751 multiletter control sequences out of 15000+600000
  18005 words of font info for 66 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  49i,12n,49p,455b,1719s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1248,10 +1245,10 @@ f-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/share/texlive/texmf-dist/fonts/
 type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (24 pages, 426450 bytes).
+Output written on main.pdf (24 pages, 426175 bytes).
 PDF statistics:
- 428 PDF objects out of 1000 (max. 8388607)
- 371 compressed objects within 4 object streams
+ 429 PDF objects out of 1000 (max. 8388607)
+ 372 compressed objects within 4 object streams
  88 named destinations out of 1000 (max. 500000)
  253 words of extra memory for PDF output out of 10000 (max. 10000000)
 

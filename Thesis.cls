@@ -23,6 +23,8 @@
 %% Further modified by www.latextemplates.com
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Further modified by APSR to comply with IITK Thesis Guidelines
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[1996/12/01]
 \ProvidesClass{Thesis}
@@ -170,7 +172,10 @@
 \pdfstringdefDisableCommands{
    \let\\\space
 }
+\newcommand*{\submitmonth}[1]{\def\submit{#1}}
+\newcommand*{\rollno}[1]{\def\rollno{#1}}
 \newcommand*{\supervisor}[1]{\def\supname{#1}}
+\newcommand*{\cosupervisor}[1]{\def\cosupname{#1}}
 \newcommand*{\thesistitle}[1]{\def\ttitle{#1}}
 \newcommand*{\examiner}[1]{\def\examname{#1}}
 \newcommand*{\degree}[1]{\def\degreename{#1}}
@@ -198,8 +203,13 @@
 \thesistitle{THESIS TITLE HERE} % Your thesis title - this is used in the title and abstract
 %-------------------------------------------------  
 \supervisor{Dr. X}
+\cosupervisor{Dr. X-2} % comment if only one supervisor
 % You supervisor's name - this is used in the title page
+%-------------------------------------------------
+\rollno{154320} % Your Roll Number
 %-------------------------------------------------   
+\submitmonth{July, 2020} % Month and Year of Thesis Submission
+%-------------------------------------------------
 \examiner{} % Your examiner's name - this is not currently used anywhere in the template, cite it with \examname if you want it
 %-------------------------------------------------   
 \degree{Master of Technology} % Your degree name - this is currently used in the title page and abstract
@@ -221,11 +231,11 @@
                 {INDIAN INSTITUTE OF TECHNOLOGY KANPUR}}
 %-------------------------------------------------                
 \department{\texorpdfstring{\href{http://www.iitk.ac.in/me} % Your department's URL
-                {Department of Mechanical Engineering}} % Your department's name - used in the title page and abstract
+                {Department of Mechanical Engineering}} % Your department's name - used in the Declaration and Certificate, cite it with \deptname if you want it
                 {Department of Mechanical Engineering}}
 %-------------------------------------------------                
 \DEPARTMENT{\texorpdfstring{\href{http://www.iitk.ac.in/me} % Your department's URL
-                {DEPARTMENT OF MECHANICAL ENGINEERING}} % Your department's name in capitals - this is not currently used anywhere in the template, cite it with \DEPTNAME if you want it
+                {DEPARTMENT OF MECHANICAL ENGINEERING}} % Your department's name used in title page, cite it with \DEPTNAME if you want it
                 {DEPARTMENT OF MECHANICAL ENGINEERING}}
 %-------------------------------------------------                
 %\group{\texorpdfstring{\href{Research Group Web Site URL Here (include http://)} % Your research group's URL
@@ -315,11 +325,11 @@
     {\centering{\huge{{ABSTRACT}}} \par}
     \bigskip
     \HRule \\[0.4cm] % Horizontal line
-		Name of the student:	 \textbf{\authornames}	\hfill Roll No: \textbf{154320} \\
+		Name of the student:	 \textbf{\authornames}	\hfill Roll No: \textbf{\rollno} \\
 		Degree for which submitted:  \textbf{M.Tech.} \hfill Department:  \textbf{Mechanical Engineering} \\
 		Thesis title: \textbf{\@title}\\
-		Name of Thesis supervisors:  \textbf{\supname} and \textbf{Dr. X-2}\\
-		Month and year of thesis submission: \textbf{{\large {July, 2020}}\\[0.4cm] }
+		Name of Thesis supervisors:  \textbf{\supname} and \textbf{\cosupname}\\
+		Month and year of thesis submission: \textbf{{\large {\submit}}\\[0.4cm] }
 		\HRule \\[1.5cm] % Horizontal line	
 	
   \end{flushleft}
